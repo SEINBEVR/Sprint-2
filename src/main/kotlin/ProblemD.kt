@@ -1,4 +1,5 @@
 import kotlin.math.max
+
 /**
  * @author Kirill Vasilev <kirill.vasilev.work@gmail.com>
  */
@@ -12,23 +13,22 @@ class ProblemD {
         var clientsMoney:LongArray                                          //Массив, содержащий количество монет каждого клиента
 
         while(numberOfInputs > 0) {
-            //Считываем набор данных из:
+
             numberOfClients = readInt()                                     //Количество клиентов
-            clientsMoney = readListLong().toLongArray()                     //Количество монет каждого из клиентов
+            clientsMoney = readListLong().toLongArray().sortedArray()       //Количество монет каждого из клиентов по возрастанию
 
-            var maxProfit:Long = 0                                          //Начальный максимальный доход для набора данных = 0
 
-            for(i in 0 until numberOfClients) {                             //В двойном цикле ищем максимальную прибыль с клиентов
-                var tempMaxProfit = clientsMoney[i]                         //Добавляем новую переменную, временно хранящую максимальную прибыль
-                for(j in 0 until numberOfClients) {                         //Вычисляем максимальную прибыль для каждой возможной комбинации
-                    if(i != j && clientsMoney[j] >= clientsMoney[i]) {
-                        tempMaxProfit += clientsMoney[i]
-                    }
-                }
-                maxProfit = max(tempMaxProfit, maxProfit)                    //Записываем максимальную прибыль, сравнивая уже имеющуюся максимальную прибыль с
-            }                                                               //прошлых итераций с максимальной прибылью с настоящей итерации
+            var maxProfit:Long = 0                                          //Максимальная прибыль
+            var tempMaxProfit:Long                                          //Временная максимальная прибыль
+
+            for(i in 0 until numberOfClients) {
+                tempMaxProfit = clientsMoney[i] * (numberOfClients - i)     //Временная максимальная прибыль = количеству монет клиента * оставшее количество клинетов, имеющих больше или столько же монет
+                maxProfit = max(tempMaxProfit, maxProfit)                   //Записываем в максимальную прибыль временную, если она больше
+            }
+
+
             numberOfInputs--
-            println(maxProfit)                                              //Вывод максимальной прибыли
+            println(maxProfit)
         }
 
 
